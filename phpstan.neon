@@ -1,0 +1,14 @@
+parameters:
+    level: 7
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+    paths:
+        - src
+    tmpDir: tests/.phpstan.cache
+    ignoreErrors:
+        -
+            identifier: identical.alwaysTrue
+            message: '~compileEscapedEchos~'
+        -
+            identifier: deadCode.unreachable
+            message: '~Unreachable statement - code above always terminates\.~'
