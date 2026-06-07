@@ -40,7 +40,7 @@ class Sword implements EngineInterface
 
     public function __construct(?string $doc_root = null)
     {
-        $this->doc_root = $doc_root ?? $_SERVER['DOCUMENT_ROOT'];
+        $this->doc_root = $doc_root ?? ($_SERVER['DOCUMENT_ROOT'] ?? '');
     }
 
     /**

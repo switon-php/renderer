@@ -7,6 +7,8 @@ namespace Switon\Rendering\Tests\Unit\Engine;
 use PHPUnit\Framework\TestCase;
 use Switon\Core\AppInterface;
 use Switon\Core\PathAliasInterface;
+use ReflectionProperty;
+use Switon\Rendering\Engine\Sword;
 use Switon\Rendering\Engine\Sword\Compiler;
 use Switon\Rendering\Frames;
 use Switon\Rendering\Tests\Fixtures\TestableSword;
@@ -37,6 +39,24 @@ class SwordTest extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    public function testConstructorUsesEmptyDocRootWhenDocumentRootIsMissingFromServer(): void
+    {
+        $saved = $_SERVER['DOCUMENT_ROOT'] ?? null;
+        unset($_SERVER['DOCUMENT_ROOT']);
+
+        try {
+            $property = new ReflectionProperty(Sword::class, 'doc_root');
+            $sword = new TestableSword();
+            $this->assertSame('', $property->getValue($sword));
+        } finally {
+            if ($saved !== null) {
+                $_SERVER['DOCUMENT_ROOT'] = $saved;
+            } else {
+                unset($_SERVER['DOCUMENT_ROOT']);
+            }
+        }
     }
 
     public function testGetCompiledFileCompilesWhenDebugIsEnabled(): void
